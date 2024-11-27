@@ -62,7 +62,7 @@
                   <a-menu-item @click="openInstallDir(item)" key="999">
                     {{ mt('Open', 'ws', 'Directory') }}
                   </a-menu-item>
-                  <a-menu-item v-if="item.isRunning" @click="openUrl(item.OpenUrl)" key="1000">
+                  <a-menu-item v-if="item.isRunning && item.OpenUrl" @click="openUrl(item.OpenUrl)" key="1000">
                     {{ t('Open') }}URL
                   </a-menu-item>
                   <a-menu-item v-if="item.ConfPath" @click="openConfFile(item)" key="998">
