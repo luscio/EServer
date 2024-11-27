@@ -251,5 +251,48 @@
         "CanDelete": true,
         "Icon": "phpmyadmin.png",
         "Desc": "MySQL management tool on the web"
+    },
+    {
+        "Name": "Meilisearch",
+        "DirName": "Meilisearch",
+        "Type": "Server",
+        "ServerProcessPath": "meilisearch.exe",
+        "ServerConfPath": "config.toml",
+        "StartServerArgs": ["--config-file-path=${ServerConfPath}"],
+        "ShellServerProcess": true,
+        "unwatch": true,
+        "RemoteArchiveExt": ".7z",
+        "CanDelete": true,
+        "Icon": "meilisearch.ico",
+        "Desc": "Search engines"
+    },
+    {
+        "Name": "Minio",
+        "DirName": "Minio",
+        "Type": "Server",
+        "ServerProcessPath": "minio.exe",
+        "StartServerArgs": [
+            "server ./data --address=:9200 --console-address=:9201"
+        ],
+        "ShellServerProcess": true,
+        "unwatch": true,
+        "RemoteArchiveExt": ".7z",
+        "CanDelete": true,
+        "Icon": "ico-minio.svg",
+        "Desc": "Compatible with S3 distributed object storage"
+    },
+    {
+        "Name": "Supervisord",
+        "DirName": "Supervisord",
+        "Type": "Server",
+        "ServerProcessPath": "supervisord.exe",
+        "ServerConfPath": "supervisord.conf",
+        "StartServerArgs": ["-c ${ServerConfPath} -d"],
+        "ShellServerProcess": true,
+        "unwatch": true,
+        "RemoteArchiveExt": ".7z",
+        "CanDelete": true,
+        "Icon": "ico-supervisor.png",
+        "Desc": "Process manager"
     }
 ]

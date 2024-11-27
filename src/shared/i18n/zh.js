@@ -185,5 +185,8 @@ export default {
     Minutes: '分钟',
     Seconds: '秒',
     Days: '天',
-    Weeks: '周'
+    Weeks: '周',
+    'Search engines': '搜索引擎',
+    'Compatible with S3 distributed object storage': '兼容S3分布式对象存储',
+    'Process manager': '进程管理器'
 }

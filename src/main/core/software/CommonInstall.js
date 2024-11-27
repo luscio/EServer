@@ -26,6 +26,12 @@ export default class CommonInstall {
             await SoftwareInit.initPHP(version)
         } else if (dirName.match(/^nginx$/)) {
             await SoftwareInit.initNginx()
+        } else if (dirName.match(/^Meilisearch$/)) {
+            await SoftwareInit.initMeilisearch()
+        } else if (dirName.match(/^Minio$/)) {
+            await SoftwareInit.initMinio()
+        } else if (dirName.match(/^Supervisord$/)) {
+            await SoftwareInit.initSupervisord()
         }
     }
 }

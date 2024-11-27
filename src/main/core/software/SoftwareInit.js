@@ -12,6 +12,12 @@ export default class SoftwareInit {
         await Promise.all([this.initNginx(), this.initAllPHP(), this.initAllMySQL()])
     }
 
+    static async initMeilisearch() {}
+
+    static async initMinio() {}
+
+    static async initSupervisord() {}
+
     static async initNginx() {
         try {
             let path = Path.Join(GetPath.getNginxConfDir(), 'nginx.conf')

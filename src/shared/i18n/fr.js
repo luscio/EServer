@@ -185,5 +185,8 @@ export default {
     Minutes: 'Minutes',
     Seconds: 'Secondes',
     Days: 'Jours',
-    Weeks: 'Semaines'
+    Weeks: 'Semaines',
+    'Search engines': 'Moteur de recherche',
+    'Compatible with S3 distributed object storage': 'Compatible avec S3 Distributed Object Storage',
+    'Process manager': 'Gestionnaire de processus'
 }
