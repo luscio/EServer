@@ -59,6 +59,9 @@
             <a-dropdown :trigger="['click']">
               <template #overlay>
                 <a-menu>
+                  <a-menu-item v-if="item.isRunning" @click="openUrl(item.OpenUrl)" key="1000">
+                    {{ t('Open') }}
+                  </a-menu-item>
                   <a-menu-item @click="openInstallDir(item)" key="999">
                     {{ mt('Open', 'ws', 'Directory') }}
                   </a-menu-item>
@@ -194,11 +197,11 @@ const initServerListStatus = async () => {
 
 const corePathClick = () => Native.openDirectory(GetAppPath.getUserCoreDir())
 const wwwPathClick = () => Native.openDirectory(GetPath.getWebsiteDir())
-const openInstallDir = (item) => Native.openDirectory(Software.getPath(item))``
+const openInstallDir = (item) => Native.openDirectory(Software.getPath(item))
 const openConfFile = (item) => Native.openTextFile(Software.getConfPath(item))
 const openServerConfFile = (item) => Native.openTextFile(Software.getServerConfPath(item))
 const openExtraFile = (item, extraFile) => Native.openTextFile(Path.Join(Software.getPath(item), extraFile.Path))
-
+const openUrl = (url) => Native.openUrl(url)
 </script>
 
 <style scoped lang="less">

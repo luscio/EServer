@@ -42,6 +42,9 @@
                   <a-dropdown :trigger="['click']">
                     <template #overlay>
                       <a-menu>
+                        <a-menu-item v-if="item.OpenUrl" @click="openUrl(item.OpenUrl)">
+                          {{ t('Open') }}
+                        </a-menu-item>
                         <a-menu-item v-if="item.IsMacApp || item.WinExePath" @click="openApp(item)">
                           {{ t('Open') }}
                         </a-menu-item>

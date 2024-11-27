@@ -259,6 +259,7 @@
         "ServerProcessPath": "meilisearch.exe",
         "ServerConfPath": "config.toml",
         "StartServerArgs": ["--config-file-path=${ServerConfPath}"],
+        "OpenUrl": "http://localhost:7700",
         "ShellServerProcess": true,
         "unwatch": true,
         "RemoteArchiveExt": ".7z",
@@ -274,6 +275,7 @@
         "StartServerArgs": [
             "server ./data --address=:9200 --console-address=:9201"
         ],
+        "OpenUrl": "http://localhost:9200",
         "ShellServerProcess": true,
         "unwatch": true,
         "RemoteArchiveExt": ".7z",
@@ -288,6 +290,7 @@
         "ServerProcessPath": "supervisord.exe",
         "ServerConfPath": "supervisord.conf",
         "StartServerArgs": ["-c ${ServerConfPath} -d"],
+        "OpenUrl": "http://localhost:9111",
         "ShellServerProcess": true,
         "unwatch": true,
         "RemoteArchiveExt": ".7z",
