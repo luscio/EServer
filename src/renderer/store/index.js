@@ -95,5 +95,8 @@ export const useMainStore = defineStore('main', {
 
             setTwoToneColor(primaryColor)
         }
-    }
+    },
+    persist: {
+        paths: ['settings', 'customTheme', 'websiteList'],
+    },
 })
