@@ -60,7 +60,7 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item v-if="item.isRunning" @click="openUrl(item.OpenUrl)" key="1000">
-                    {{ t('Open') }}
+                    {{ t('Open') }}URL
                   </a-menu-item>
                   <a-menu-item @click="openInstallDir(item)" key="999">
                     {{ mt('Open', 'ws', 'Directory') }}
