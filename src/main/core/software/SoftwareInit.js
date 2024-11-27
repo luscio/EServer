@@ -6,7 +6,6 @@ import DirUtil from '@/main/utils/DirUtil'
 import Php from '@/main/core/php/Php'
 import Database from '@/main/core/Database'
 import { isWindows } from '@/main/utils/utils'
-import child_process from 'child_process'
 
 export default class SoftwareInit {
     static async initAll() {
@@ -15,13 +14,7 @@ export default class SoftwareInit {
 
     static async initMeilisearch() {}
 
-    static async initMinio() {
-        try {
-            child_process.execSync('set MINIO_ROOT_USER=admin')
-            child_process.execSync('set MINIO_ROOT_PASSWORD=12345678')
-        } catch (error) {
-        }
-    }
+    static async initMinio() {}
 
     static async initSupervisord() {}
 
