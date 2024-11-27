@@ -48,9 +48,6 @@
                         <a-menu-item @click="openInstallPath(item)">
                           {{ mt('Open', 'ws', 'Directory') }}
                         </a-menu-item>
-                        <a-menu-item v-if="item.OpenUrl" @click="openUrl(item.OpenUrl)">
-                          {{ t('Open') }}URL
-                        </a-menu-item>
                         <a-menu-item v-if="item.ConfPath" @click="openConfFile(item)" key="998">
                           {{ mt('Open', 'ws') }}{{ Path.GetBaseName(item.ConfPath) }}
                         </a-menu-item>
