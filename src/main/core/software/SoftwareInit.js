@@ -16,8 +16,8 @@ export default class SoftwareInit {
     static async initMeilisearch() {}
 
     static async initMinio() {
-        child_process.exec('set MINIO_ROOT_USER=admin')
-        child_process.exec('set MINIO_ROOT_PASSWORD=12345678')
+        child_process.spawn('cmd.exe', ['set MINIO_ROOT_USER=admin'])
+        child_process.spawn('cmd.exe', ['set MINIO_ROOT_PASSWORD=12345678'])
     }
 
     static async initSupervisord() {}
