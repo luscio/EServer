@@ -188,5 +188,6 @@ export default {
     Weeks: '周',
     'Search engines': '搜索引擎',
     'Compatible with S3 distributed object storage': '兼容S3分布式对象存储',
-    'Process manager': '进程管理器'
+    'Process manager': '进程管理器',
+    'Total items': '共{count}条',
 }

@@ -84,7 +84,8 @@ const DownOutlined = createAsyncComponent(import('@ant-design/icons-vue'), 'Down
 const pagination = {
   defaultPageSize: 10,
   showSizeChanger: true,
-  showTotal: (total) => `Total ${total} items`
+  // showTotal: (total) => `Total ${total} items`,
+  showTotal: (total) => t('Total items', total),
 }
 
 const columns = computed(() => {

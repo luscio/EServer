@@ -188,5 +188,6 @@ export default {
     Weeks: 'Semaines',
     'Search engines': 'Moteur de recherche',
     'Compatible with S3 distributed object storage': 'Compatible avec S3 Distributed Object Storage',
-    'Process manager': 'Gestionnaire de processus'
+    'Process manager': 'Gestionnaire de processus',
+    'Total items': 'Total 1 articles | {count} articles au total',
 }
