@@ -112,7 +112,8 @@ const columns = computed(() => {
     {
       title: t('Port'),
       width: 60,
-      dataIndex: 'port'
+      dataIndex: 'port',
+      sorter: (a, b) => a.port - b.port,
     },
     {
       title: t('RootPath'),
