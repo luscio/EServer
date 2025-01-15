@@ -40,7 +40,7 @@ const oneClickServerOptions = computed(() => {
     const name = item.Name
     return { value: name, label: item.ServerName ? item.ServerName : name }
   })
-  options.unshift({ label: t('Website') + ' PHP-FPM', value: 'PHP-FPM' })
+  // options.unshift({ label: t('Website') + ' PHP-FPM', value: 'PHP-FPM' })
   return options
 })
 
