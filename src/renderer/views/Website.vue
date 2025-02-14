@@ -67,14 +67,14 @@ import AddWebSiteModal from '@/renderer/components/WebSite/AddWebSiteModal.vue'
 import EditWebSiteModal from '@/renderer/components/WebSite/EditWebSiteModal.vue'
 import Website from '@/main/core/website/Website'
 import MessageBox from '@/renderer/utils/MessageBox'
-import Native from '@/main/utils/Native'
+import Native from '@/renderer/utils/Native'
 import Hosts from '@/main/utils/Hosts'
 import { mt, t } from '@/renderer/utils/i18n'
 import { isWindows } from '@/main/utils/utils'
 import { createAsyncComponent } from '@/renderer/utils/utils'
 import { useMainStore } from '@/renderer/store'
-import GetPath from '@/shared/utils/GetPath'
-import Path from '@/main/utils/Path'
+import GetDataPath from '@/shared/utils/GetDataPath'
+import path from 'path'
 
 const store = useMainStore()
 const AButton = createAsyncComponent(import('ant-design-vue'), 'Button')
@@ -235,12 +235,12 @@ const openRootPath = (item) => {
 }
 
 const openAccessLog = (item) => {
-  const filePath = Path.Join(GetPath.getNginxLogsDir(), `${item.serverName}_${item.port}.access.log`)
+  const filePath = path.join(GetDataPath.getNginxLogsDir(), `${item.serverName}_${item.port}.access.log`)
   Native.openTextFile(filePath)
 }
 
 const openErrorLog = (item) => {
-  const filePath = Path.Join(GetPath.getNginxLogsDir(), `${item.serverName}_${item.port}.error.log`)
+  const filePath = path.join(GetDataPath.getNginxLogsDir(), `${item.serverName}_${item.port}.error.log`)
   Native.openTextFile(filePath)
 }
 </script>

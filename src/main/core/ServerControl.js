@@ -3,8 +3,9 @@ import ProcessExtend from "@/main/utils/ProcessExtend";
 import Software from "@/main/core/software/Software";
 import { parseTemplateStrings} from "@/shared/utils/utils";
 import child_process from "child_process";
-import Path from "@/main/utils/Path";
+import path from "path";
 import FileUtil from "@/main/utils/FileUtil";
+import GetDataPath from '@/shared/utils/GetDataPath'
 
 export default class ServerControl {
     /**
@@ -13,7 +14,7 @@ export default class ServerControl {
      * @returns {Promise<void>}
      */
     static async start(item) {
-        const workPath = Software.getPath(item) //服务目录
+        const workPath = Software.getDir(item) //服务目录
         const ctrlProcessPath = this.getControlProcessPath(item)
         const options = { cwd: workPath, detached: true }
 
@@ -42,22 +43,22 @@ export default class ServerControl {
         })
 
         childProcess.on('close', (code) => {
-            devConsoleLog(`${Path.GetBaseName(ctrlProcessPath)},exit code ${code}`)
+            devConsoleLog(`${path.basename(ctrlProcessPath)},exit code ${code}`)
             item.isRunning = false
         })
 
         devConsoleLog('ServerControl start command:', `${ctrlProcessPath} ${args.join(' ')}`)
-        devConsoleLog(`${Path.GetBaseName(ctrlProcessPath)},pid ${childProcess.pid}`)
+        devConsoleLog(`${path.basename(ctrlProcessPath)},pid ${childProcess.pid}`)
 
         item.pid = childProcess.pid;
     }
 
     static getControlProcessPath(item) {
-        const workPath = Software.getPath(item)
+        const workPath = Software.getDir(item)
         if (item.ControlProcessPath) {
-            return Path.Join(workPath, item.ControlProcessPath) //控制进程的目录
+            return path.join(workPath, item.ControlProcessPath) //控制进程的目录
         } else {
-            return Path.Join(workPath, item.ServerProcessPath) //服务进程的目录
+            return path.join(workPath, item.ServerProcessPath) //服务进程的目录
         }
     }
 
@@ -67,7 +68,7 @@ export default class ServerControl {
      * @returns {Promise<void>}
      */
     static async stop(item) {
-        const workPath = Software.getPath(item)
+        const workPath = Software.getDir(item)
         const options = { cwd: workPath, detached: true }
         if (item.StopServerArgs) {
             const args = this.parseServerArgs(item, item.StopServerArgs)
@@ -88,16 +89,23 @@ export default class ServerControl {
      * @param args{array}
      */
     static parseServerArgs(item, args) {
-        const workPath = Software.getPath(item)
-        return args.map((arg) => {
-            const argObj = {
-                WorkPath: workPath.replaceSlash(),
-                ServerProcessPath: Path.Join(workPath, item.ServerProcessPath).replaceSlash(),
-                ConfPath: item.ConfPath ? Path.Join(workPath, item.ConfPath).replaceSlash() : null,
-                ServerConfPath: item.ServerConfPath ? Path.Join(workPath, item.ServerConfPath).replaceSlash() : null,
-                ExtraProcessPath: item.ExtraProcessPath ? Path.Join(workPath, item.ExtraProcessPath).replaceSlash() : null
+        const workDir = Software.getDir(item)
+        const etcDir = GetDataPath.getEtcDir()
+        return args.map((varStr) => {
+            //将所有平台的路径分隔符改成正斜杠 /
+            const varMap = {
+                WorkDir: workDir.replaceSlash(),
+                WorkPath: workDir.replaceSlash(),
+                EtcDir: path.join(etcDir, item.DirName).replaceSlash(),
+                ServerProcessPath: path.join(workDir, item.ServerProcessPath).replaceSlash(),
+                ConfPath: item.ConfPath ? item.ConfPath.replaceSlash() : null,
+                ServerConfPath: item.ServerConfPath ? item.ServerConfPath.replaceSlash() : null,
+                ExtraProcessPath: item.ExtraProcessPath ? path.join(workDir, item.ExtraProcessPath).replaceSlash() : null
             }
-            return parseTemplateStrings(arg, argObj)
+            for (let i = 0; i < 3; i++) { //最多解析嵌套的层数为3层
+                varStr = parseTemplateStrings(varStr, varMap)
+            }
+            return varStr
         })
     }
 }

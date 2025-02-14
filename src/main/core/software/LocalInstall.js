@@ -1,7 +1,7 @@
-import Path from "@/main/utils/Path";
 import Software from "@/main/core/software/Software";
 import FileUtil from "@/main/utils/FileUtil";
 import CommonInstall from "@/main/core/software/CommonInstall";
+import PathExt from '@/shared/utils/PathExt'
 
 
 export default class LocalInstall {
@@ -13,31 +13,26 @@ export default class LocalInstall {
      */
     static async install(filePath, deleteSrc = false) {
         const dirName = this.getDirName(filePath)
-        const dest = await this.getDestPath(dirName)
+        const softItem = await Software.getItemByDirName(dirName)
+        const dest = softItem ? Software.getTypeDir(softItem.Type) : null
         if (!dest) return
         await CommonInstall.extract(filePath, dest)
         if (deleteSrc){
             await FileUtil.Delete(filePath)
         }
-        await CommonInstall.configure(dirName)
+        await CommonInstall.configure(softItem)
     }
 
     static async installMultiple(files) {
-        await Promise.all(files.map(async install => {
-            await LocalInstall.install(install,true);
+        await Promise.all(files.map(async file => {
+            await LocalInstall.install(file,true);
         }));
     }
 
-    static async getDestPath(dirName) {
-        const softList = await Software.getList();
-        const item = softList.find(item => item.DirName === dirName);
-        return item ? Software.getTypePath(item.Type) : null;
-    };
-
     static getDirName(filePath) {
-        let dirName = Path.GetFileNameWithoutExt(filePath);
+        let dirName = PathExt.GetFileNameWithoutExt(filePath);
         if (dirName.endsWith('.tar')) {
-            dirName = Path.GetFileNameWithoutExt(dirName);
+            dirName = PathExt.GetFileNameWithoutExt(dirName);
         }
         return dirName;
     }

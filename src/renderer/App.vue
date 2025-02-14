@@ -31,7 +31,7 @@ import Software from '@/main/core/software/Software'
 import Service from '@/main/utils/Service'
 import { message } from 'ant-design-vue'
 import DirUtil from '@/main/utils/DirUtil'
-import { MAC_USER_CORE_DIR } from '@/main/utils/constant'
+import { MAC_DATA_DIR } from '@/main/utils/constant'
 import ConfigProvider from '@/renderer/components/Theme/ConfigProvider.vue'
 import SetLanguage from '@/renderer/components/SetLanguage.vue'
 import { useMainStore } from '@/renderer/store'
@@ -39,6 +39,7 @@ import Settings from '@/main/Settings'
 import { t } from '@/renderer/utils/i18n'
 import { changeLanguageWrapper } from '@/renderer/utils/language'
 import SystemExtend from '@/main/utils/SystemExtend'
+import { OFFICIAL_URL } from '@/shared/utils/constant'
 
 const store = useMainStore()
 //操作softwareList和serverList等JS代码，都要等待init完成。
@@ -71,6 +72,7 @@ onMounted(async () => {
   if (isWindows) {
     stopIIS()
   }
+  parseAppNotice()
 })
 
 async function initOrUpdate() {
@@ -81,8 +83,8 @@ async function initOrUpdate() {
     await call('appExit')
   }
   //存在initFile文件的情况下，判断是第一次安装，还是覆盖安装
-  if (!(await Software.DirExists())) {
-    //目录不存在说明是第一次安装
+
+  if (!(await Software.DirExists())) { //目录不存在说明是，第一次安装
     if (isMacOS) {
       //调用设置（electron-store）会自动创建USER_CORE_DIR，为了捕捉创建失败的错误，先提前写好创建文件夹的代码。
       await macCreateUserCoreDir()
@@ -117,8 +119,8 @@ async function winInit() {
 
 async function macCreateUserCoreDir() {
   try {
-    if (!(await DirUtil.Exists(MAC_USER_CORE_DIR))) {
-      await DirUtil.Create(MAC_USER_CORE_DIR)
+    if (!(await DirUtil.Exists(MAC_DATA_DIR))) {
+      await DirUtil.Create(MAC_DATA_DIR)
     }
   } catch (error) {
     await MessageBox.error(error.message ?? error, t('errorOccurredDuring', [t('initializing')]))
@@ -143,6 +145,19 @@ async function stopIIS() {
   if (await Service.isRunning(IISServiceName)) {
     await Service.stop(IISServiceName)
     message.info('')
+  }
+}
+
+/**
+ * 解析远程通知和广告
+ * @returns {Promise<void>}
+ */
+async function parseAppNotice() {
+  try {
+    const response = await fetch(`${OFFICIAL_URL}/AppAdES.json`)
+    store.noticeList = await response.json()
+  } catch {
+    /* empty */
   }
 }
 </script>

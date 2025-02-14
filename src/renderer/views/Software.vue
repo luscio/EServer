@@ -49,10 +49,10 @@
                           {{ mt('Open', 'ws', 'Directory') }}
                         </a-menu-item>
                         <a-menu-item v-if="item.ConfPath" @click="openConfFile(item)" key="998">
-                          {{ mt('Open', 'ws') }}{{ Path.GetBaseName(item.ConfPath) }}
+                          {{ mt('Open', 'ws') }}{{ path.basename(item.ConfPath) }}
                         </a-menu-item>
                         <a-menu-item v-if="item.ServerConfPath" @click="openServerConfFile(item)" key="997">
-                          {{ mt('Open', 'ws') }}{{ Path.GetBaseName(item.ServerConfPath) }}
+                          {{ mt('Open', 'ws') }}{{ path.basename(item.ServerConfPath) }}
                         </a-menu-item>
                         <a-menu-item v-if="item.Type === phpTypeValue" @click="showPhpExtManager(item)">
                           {{ mt('Install', 'ws', 'Extension') }}
@@ -132,10 +132,10 @@ import { AppstoreAddOutlined, DownOutlined } from '@ant-design/icons-vue'
 import Software from '@/main/core/software/Software'
 import MessageBox from '@/renderer/utils/MessageBox'
 import { enumGetName, getFileSizeText, getIpcError } from '@/shared/utils/utils'
-import Native from '@/main/utils/Native'
+import Native from '@/renderer/utils/Native'
 import PhpExtManager from '@/renderer/components/Software/PhpExtManager.vue'
 import SoftwareExtend from '@/main/core/software/SoftwareExtend'
-import Path from '@/main/utils/Path'
+import path from 'path'
 import { mt, t } from '@/renderer/utils/i18n'
 import { isMacOS, isWindows } from '@/main/utils/utils'
 import LocalInstall from '@/main/core/software/LocalInstall'
@@ -250,15 +250,15 @@ const clickStop = (name) => {
 const openApp = (item) => {
   let appPath = ''
   if (isWindows) {
-    appPath = Path.Join(Software.getPath(item), item.WinExePath)
+    appPath = path.join(Software.getDir(item), item.WinExePath)
   } else if (isMacOS) {
-    appPath = Software.getPath(item)
+    appPath = Software.getDir(item)
   }
   Native.openApp(appPath)
 }
 
 const openInstallPath = async (item) => {
-  let path = item.IsMacApp ? Software.getTypePath(item.Type) : Software.getPath(item)
+  let path = item.IsMacApp ? Software.getTypeDir(item.Type) : Software.getDir(item)
   Native.openDirectory(path)
 }
 

@@ -62,17 +62,14 @@
                   <a-menu-item @click="openInstallDir(item)" key="999">
                     {{ mt('Open', 'ws', 'Directory') }}
                   </a-menu-item>
-                  <a-menu-item v-if="item.isRunning && item.OpenUrl" @click="openUrl(item.OpenUrl)" key="1000">
-                    {{ t('Open') }}URL
-                  </a-menu-item>
                   <a-menu-item v-if="item.ConfPath" @click="openConfFile(item)" key="998">
-                    {{ mt('Open', 'ws') }}{{ Path.GetBaseName(item.ConfPath) }}
+                    {{ mt('Open', 'ws') }}{{ path.basename(item.ConfPath) }}
                   </a-menu-item>
                   <a-menu-item v-if="item.ServerConfPath" @click="openServerConfFile(item)" key="997">
-                    {{ mt('Open', 'ws') }}{{ Path.GetBaseName(item.ServerConfPath) }}
+                    {{ mt('Open', 'ws') }}{{ path.basename(item.ServerConfPath) }}
                   </a-menu-item>
-                  <a-menu-item v-for="(item, i) in item.ExtraFiles" :key="i" @click="openExtraFile(item, item)">
-                    {{ mt('Open', 'ws') }}{{ item.Name }}
+                  <a-menu-item v-for="item2 in item.ExtraFiles" @click="openExtraFile(item, item2)">
+                    {{ mt('Open', 'ws') }}{{ item2.Name }}
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -88,13 +85,13 @@
 <script setup>
 import { onMounted, ref} from 'vue'
 import { useMainStore } from '@/renderer/store'
-import GetPath from '@/shared/utils/GetPath'
-import GetAppPath from '@/main/utils/GetAppPath'
+import GetCorePath from '@/shared/utils/GetCorePath'
+import GetDataPath from '@/shared/utils/GetDataPath'
 import Software from '@/main/core/software/Software'
 import { storeToRefs } from 'pinia/dist/pinia'
 import { APP_NAME } from '@/shared/utils/constant'
-import Native from '@/main/utils/Native'
-import Path from '@/main/utils/Path'
+import Native from '@/renderer/utils/Native'
+import path from 'path'
 import ProcessExtend from '@/main/utils/ProcessExtend'
 import HomeService from '@/renderer/services/HomeService'
 import { devConsoleLog,isWindows } from '@/main/utils/utils'
@@ -137,8 +134,6 @@ const store = useMainStore()
 const { serverList } = storeToRefs(store)
 
 window.addEventListener(StoreInitializedEventName, async () => {
-  console.log('Listened StoreInitializedEvent')
-
   loadingHandle().then(() => {
     store.Home.firstLoadingHandled = true
     //“打开软件后，启动服务”功能，必须等待读取server列表状态。避免server真实状态是“启动”，重复启动软件。
@@ -164,7 +159,7 @@ const loadingHandle = async () => {
 
 const getProcessList = async () => {
   let list
-  const options = { directory: GetPath.getSoftwareDir() }
+  const options = { directory: GetDataPath.getSoftwareDir() }
   if (isWindows) {
     list = await window.api.callStatic('ProcessLibrary', 'getList', options)
   } else {
@@ -195,13 +190,13 @@ const initServerListStatus = async () => {
   await Promise.all(promiseArray)
 }
 
-const corePathClick = () => Native.openDirectory(GetAppPath.getUserCoreDir())
-const wwwPathClick = () => Native.openDirectory(GetPath.getWebsiteDir())
-const openInstallDir = (item) => Native.openDirectory(Software.getPath(item))
+const corePathClick = () => Native.openDirectory(GetCorePath.getDir())
+const wwwPathClick = () => Native.openDirectory(Settings.get('WebsiteDir'))
+const openInstallDir = (item) => Native.openDirectory(Software.getDir(item))
 const openConfFile = (item) => Native.openTextFile(Software.getConfPath(item))
 const openServerConfFile = (item) => Native.openTextFile(Software.getServerConfPath(item))
-const openExtraFile = (item, extraFile) => Native.openTextFile(Path.Join(Software.getPath(item), extraFile.Path))
-const openUrl = (url) => Native.openUrl(url)
+const openExtraFile = (item, extraFile) => Native.openTextFile(path.join(Software.getDir(item), extraFile.Path))
+
 </script>
 
 <style scoped lang="less">

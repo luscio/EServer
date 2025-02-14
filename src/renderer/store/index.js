@@ -22,7 +22,8 @@ export const useMainStore = defineStore('main', {
             websiteList: { showSecondDomainName: false, showNote: false },
             Home: {
                 firstLoadingHandled: false
-            }
+            },
+            noticeList:[]
         }
     },
     getters: {
@@ -95,8 +96,5 @@ export const useMainStore = defineStore('main', {
 
             setTwoToneColor(primaryColor)
         }
-    },
-    persist: {
-        paths: ['settings', 'customTheme', 'websiteList'],
-    },
+    }
 })
